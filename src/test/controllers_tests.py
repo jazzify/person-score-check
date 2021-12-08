@@ -1,18 +1,12 @@
 import unittest
 
 from src.controller import ValidatorController
+from src.test.test_data import MIXED_USERS
 
 
-class TestStringMethods(unittest.TestCase):
+class TestController(unittest.TestCase):
     def setUp(self):
-        self.users = [
-            {"id": "1151959064", "name": "Jorge"},
-            {"id": "21429829", "name": "Miguel"},
-            {"id": "1438277384", "name": "Karen"},
-            {"id": "14382774", "name": "Julia"},
-            {"ids": "14382774", "names": "Julia"},
-        ]
-        self.validator_controller = ValidatorController(self.users)
+        self.validator_controller = ValidatorController(MIXED_USERS)
 
     def test_validate_users(self):
         validated_users = self.validator_controller.validate_users()
