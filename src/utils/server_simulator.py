@@ -20,14 +20,14 @@ class ExternalServer:
 
 
 class NationalRegistryServer(ExternalServer):
-    async def get_user_score(self) -> None:
+    async def get_user_score(self) -> dict:
         is_valid = self.user["id"] in REGISTRY_VALID_USERS
         self.response = {"user": self.user["name"], "is_valid": is_valid}
         return await super().get_user_score()
 
 
 class NationalArchivesServer(ExternalServer):
-    async def get_user_score(self) -> None:
+    async def get_user_score(self) -> dict:
         is_valid = self.user["name"] in ARCHIVES_VALID_USERS
         self.response = {"user": self.user["name"], "is_valid": is_valid}
         return await super().get_user_score()
