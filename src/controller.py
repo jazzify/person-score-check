@@ -47,8 +47,8 @@ class ValidatorController:
         national_archives_system = NationalArchivesSystemService(user)
 
         scores = await asyncio.gather(
-            national_archives_system.user_validator_score(),
-            national_registry_system.user_validator_score(),
+            national_archives_system.validate_data(),
+            national_registry_system.validate_data(),
         )
 
         validations["external_scores"] = scores

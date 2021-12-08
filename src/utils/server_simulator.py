@@ -9,10 +9,11 @@ class ExternalServer:
         self.user = user
         self.response = {}
 
-    async def get_user_score(self) -> None:
+    async def get_user_validation(self, is_valid: bool) -> None:
         # Simulate server latency between 300 and 1000 ms
         t = uniform(0.3, 1)
         await asleep(t)
+        self.response = {"user": self.user["name"], "is_valid": is_valid}
         return self._get_response()
 
     def _get_response(self):
@@ -20,14 +21,12 @@ class ExternalServer:
 
 
 class NationalRegistryServer(ExternalServer):
-    async def get_user_score(self) -> dict:
+    async def get_user_validation(self, is_valid=False) -> dict:
         is_valid = self.user["id"] in REGISTRY_VALID_USERS
-        self.response = {"user": self.user["name"], "is_valid": is_valid}
-        return await super().get_user_score()
+        return await super().get_user_validation(is_valid)
 
 
 class NationalArchivesServer(ExternalServer):
-    async def get_user_score(self) -> dict:
+    async def get_user_validation(self, is_valid=False) -> dict:
         is_valid = self.user["name"] in ARCHIVES_VALID_USERS
-        self.response = {"user": self.user["name"], "is_valid": is_valid}
-        return await super().get_user_score()
+        return await super().get_user_validation(is_valid)

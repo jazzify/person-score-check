@@ -9,7 +9,7 @@ class InternalSystemService(ABC):
         self.set_user_score()
 
     @abstractmethod
-    def verify_user_score(self) -> bool:
+    def verify_validations(self) -> bool:
         pass
 
     @abstractmethod
@@ -25,11 +25,11 @@ class InternalSystemService(ABC):
 
 
 class ProspectQualificationSystemService(InternalSystemService):
-    def verify_user_score(self) -> bool:
+    def verify_validations(self) -> bool:
         return all(self.scores)
 
     def set_user_score(self) -> None:
-        if self.verify_user_score():
+        if self.verify_validations():
             self.user_score = randint(0, 100)
 
     def is_prospect_user(self) -> bool:

@@ -12,7 +12,7 @@ class TestUtilsServer(unittest.IsolatedAsyncioTestCase):
 
     async def test_national_registry_valid_user(self):
         registry_server = NationalRegistryServer(self.valid_user)
-        external_validator = await registry_server.get_user_score()
+        external_validator = await registry_server.get_user_validation()
 
         self.assertEqual(
             external_validator, {"user": self.valid_user["name"], "is_valid": True}
@@ -20,7 +20,7 @@ class TestUtilsServer(unittest.IsolatedAsyncioTestCase):
 
     async def test_national_registry_invalid_user(self):
         registry_server = NationalRegistryServer(self.invalid_user)
-        external_validator = await registry_server.get_user_score()
+        external_validator = await registry_server.get_user_validation()
 
         self.assertEqual(
             external_validator, {"user": self.invalid_user["name"], "is_valid": False}
@@ -28,7 +28,7 @@ class TestUtilsServer(unittest.IsolatedAsyncioTestCase):
 
     async def test_national_archives_valid_user(self):
         archives_server = NationalArchivesServer(self.valid_user)
-        external_validator = await archives_server.get_user_score()
+        external_validator = await archives_server.get_user_validation()
 
         self.assertEqual(
             external_validator, {"user": self.valid_user["name"], "is_valid": True}
@@ -36,7 +36,7 @@ class TestUtilsServer(unittest.IsolatedAsyncioTestCase):
 
     async def test_national_archives_invalid_user(self):
         archives_server = NationalArchivesServer(self.invalid_user)
-        external_validator = await archives_server.get_user_score()
+        external_validator = await archives_server.get_user_validation()
 
         self.assertEqual(
             external_validator, {"user": self.invalid_user["name"], "is_valid": False}
