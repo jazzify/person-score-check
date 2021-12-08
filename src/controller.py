@@ -6,35 +6,18 @@ from src.services.external_systems_service import (
     NationalRegistrySystemService,
 )
 from src.services.internal_systems_service import ProspectQualificationSystemService
+from src.utils.validators import UserControllerValidator
 
 
 class ValidatorController:
     def __init__(self, users: dict) -> None:
-        self.users = self._validated_users(users)
+        validator = UserControllerValidator(users)
+        self.users = validator.get_validated_data()
         self.user_validation = {}
-
-    def _validated_users(self, users: list[dict]) -> list[dict]:
-        valid_users = []
-        invalid_users = []
-
-        for user in users:
-            # Checks 'id' and 'name' exists
-            if user.keys() >= {"id", "name"}:
-                # Checks 'id' and 'name' values are str instances
-                if map(
-                    lambda k: isinstance(k, str),
-                    [user["id"], user["name"]],
-                ):
-                    valid_users.append(user)
-            else:
-                invalid_users.append(user)
-
-        print(f"Invalid users: {invalid_users}")
-        return valid_users
 
     def validate_users(self) -> dict:
         with ProcessPoolExecutor() as executor:
-            for response in executor.map(self._run_validation, self.users):
+            for response in executor.map(self._run_validations, self.users):
                 user = response["user"]
                 scores = response["external_scores"]
 
@@ -52,7 +35,7 @@ class ValidatorController:
 
         return self.user_validation
 
-    def _run_validation(self, user: dict) -> dict:
+    def _run_validations(self, user: dict) -> dict:
         return asyncio.run(self._get_user_validations(user))
 
     async def _get_user_validations(self, user: dict) -> dict:
